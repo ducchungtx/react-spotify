@@ -1,18 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Songs } from '../Context'
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSongById, songSelector } from '../redux/Slice/SongSlice';
+import { getListSong, songsSelector } from '../redux/Slice/SongsSlice';
 
 function ListSongs() {
-  const { DataSongs, setSong, song } = useContext(Songs);
+  const dispatch = useDispatch();
+  const { songs } = useSelector(songsSelector);
+  const { song } = useSelector(songSelector);
   const [idSong, setIdSong] = useState(0);
 
   const handlePlaySong = idSong => {
     setIdSong(idSong);
-    setSong(idSong);
+    dispatch(getSongById(idSong));
   }
 
   useEffect(() => {
+    dispatch(getListSong());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     setIdSong(song.id);
-  }, [song])
+  }, [song]);
 
   return (
     <div className='col-span-2 overflow-y-scroll'>
@@ -26,7 +35,7 @@ function ListSongs() {
           </tr>
         </thead>
         <tbody>
-          {DataSongs.map((song, index) => {
+          {songs.map((song, index) => {
             return (
               <tr
                 key={index}

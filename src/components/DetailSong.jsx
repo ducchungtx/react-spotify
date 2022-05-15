@@ -1,8 +1,15 @@
-import React, { useContext } from 'react';
-import { Songs } from '../Context';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSongById, songSelector } from '../redux/Slice/SongSlice';
 
 function DetailSong() {
-  const {song} = useContext(Songs);
+  const dispatch = useDispatch();
+  const { song } = useSelector(songSelector);
+
+  useEffect(() => {
+    dispatch(getSongById(0));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className='col-span-1 p-3'>
